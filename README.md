@@ -1,6 +1,7 @@
 
 #Practical No. 2 — Views and Indexes
 
+
 CREATE DATABASE CollegeDB;
 
 -- View: Student Course Details
