@@ -1,3 +1,78 @@
+#Practical no. 1 
+
+-- Create Database
+CREATE DATABASE CollegeDB;
+
+-- Use Database
+USE CollegeDB;
+
+-- Create Instructor Table
+CREATE TABLE Instructor (
+    InstructorID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Email VARCHAR(50),
+    Department VARCHAR(50)
+);
+
+-- Create Student Table
+CREATE TABLE Student (
+    StudentID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Email VARCHAR(50),
+    Age INT,
+    Address VARCHAR(100)
+);
+
+-- Create Course Table
+CREATE TABLE Course (
+    CourseID INT PRIMARY KEY,
+    CourseName VARCHAR(50),
+    Credits INT,
+    InstructorID INT,
+    FOREIGN KEY (InstructorID) 
+    REFERENCES Instructor(InstructorID)
+);
+
+-- Create Enrollment Table
+CREATE TABLE Enrollment (
+    EnrollmentID INT PRIMARY KEY,
+    StudentID INT,
+    CourseID INT,
+    EnrollmentDate DATE,
+    FOREIGN KEY (StudentID) 
+    REFERENCES Student(StudentID),
+    FOREIGN KEY (CourseID) 
+    REFERENCES Course(CourseID)
+);
+
+-- Insert Instructor Data
+INSERT INTO Instructor VALUES
+(1,'Dr. Sharma','sharma@gmail.com','Computer Science'),
+(2,'Dr. Patil','patil@gmail.com','Information Technology');
+
+-- Insert Student Data
+INSERT INTO Student VALUES
+(101,'Rahul','rahul@gmail.com',20,'Pune'),
+(102,'Sneha','sneha@gmail.com',21,'Mumbai'),
+(103,'Amit','amit@gmail.com',19,'Nashik');
+
+-- Insert Course Data
+INSERT INTO Course VALUES
+(201,'Database Management',4,1),
+(202,'Data Structures',3,2);
+
+-- Insert Enrollment Data
+INSERT INTO Enrollment VALUES
+(1,101,201,'2026-03-10'),
+(2,102,202,'2026-03-10'),
+(3,103,201,'2026-03-10');
+
+-- Display Tables
+SELECT * FROM Instructor;
+SELECT * FROM Student;
+SELECT * FROM Course;
+SELECT * FROM Enrollment;
+
 
 #Practical No. 2 — Views and Indexes
 
@@ -305,3 +380,175 @@ CALL IncreaseSalary();
 SELECT * FROM Employee;
 
 
+#practical no 7
+
+
+
+// Create Collection
+db.createCollection("MANISHA");
+
+// Insert Data
+db.MANISHA.insertMany([
+{
+    NAME: "MANISHA",
+    CITY: "JUNNAR",
+    AGE: 20
+},
+{
+    NAME: "NEHA",
+    CITY: "PUNE",
+    AGE: 21
+},
+{
+    NAME: "AKANKSHA",
+    CITY: "PUNE",
+    AGE: 22
+},
+{
+    NAME: "SONAL",
+    CITY: "MUMBAI",
+    AGE: 25
+}
+]);
+
+// Finding Data
+db.MANISHA.find({ CITY: "MUMBAI" });
+
+// Update Data
+db.MANISHA.updateOne(
+    { NAME: "SONAL" },
+    { $set: { AGE: 26 } }
+);
+
+// Delete Data
+db.MANISHA.deleteOne({ NAME: "AKANKSHA" });
+
+// Aggregation on Average Age
+db.MANISHA.aggregate([
+{
+    $group: {
+        _id: null,
+        averageAGE: { $avg: "$AGE" }
+    }
+}
+]);
+
+// Creating Index
+db.MANISHA.createIndex({ AGE: 1 });
+
+
+
+
+#practical no 8
+
+
+// Insert Data
+db.posts.insertMany([
+{
+    user: "amit",
+    likes: 120,
+    content: "Learning MongoDB #mongodb #database",
+    hashtags: ["mongodb", "database"],
+    date: "2025-03-01"
+},
+{
+    user: "neha",
+    content: "AI is future #AI #ML",
+    likes: 200,
+    hashtags: ["AI", "ML"],
+    date: "2025-03-02"
+},
+{
+    user: "rahul",
+    content: "Big data #bigdata #AI",
+    likes: 150,
+    hashtags: ["bigdata", "AI"],
+    date: "2025-03-03"
+},
+{
+    user: "sneha",
+    content: "Web trends #web #javascript",
+    likes: 90,
+    hashtags: ["web", "javascript"],
+    date: "2025-03-04"
+},
+{
+    user: "karan",
+    content: "Machine Learning #ML #AI",
+    likes: 250,
+    hashtags: ["ML", "AI"],
+    date: "2025-03-05"
+}
+]);
+
+// Aggregation on Top Trending Hashtags
+db.posts.aggregate([
+{
+    $unwind: "$hashtags"
+},
+{
+    $group: {
+        _id: "$hashtags",
+        count: { $sum: 1 }
+    }
+},
+{
+    $sort: {
+        count: -1
+    }
+},
+{
+    $limit: 5
+}
+]);
+
+// Total Likes
+db.posts.aggregate([
+{
+    $group: {
+        _id: null,
+        totalLikes: { $sum: "$likes" }
+    }
+}
+]);
+
+// Average Likes
+db.posts.aggregate([
+{
+    $group: {
+        _id: null,
+        averageLikes: { $avg: "$likes" }
+    }
+}
+]);
+
+
+#practical no 9
+
+
+CREATE DATABASE college_db;
+
+USE college_db;
+
+CREATE TABLE students (
+    id INT PRIMARY KEY,
+    name VARCHAR(100),
+    department VARCHAR(50)
+);
+
+INSERT INTO students VALUES
+(1, 'Amit', 'Computer'),
+(2, 'Neha', 'Management'),
+(3, 'Rahul', 'Engineering');
+
+SELECT * FROM students;
+
+DROP DATABASE college_db;
+
+SHOW DATABASES;
+
+USE college_db;
+
+SHOW TABLES;
+
+SELECT * FROM students;
